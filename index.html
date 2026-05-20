@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fluxo Operacional · Atendimento · Dra. Anna Olivieri · v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --navy:    #0B1B2E;
+  --off:     #F7F4EE;
+  --gold:    #CAA557;
+  --cream:   #FAF8F3;
+  --border:  #E2DDD4;
+  --mc-bg:   #EEF4E8;
+  --mc-bdr:  #A8C887;
+  --mc-txt:  #2A4A1A;
+  --mp-bg:   #E6EEF8;
+  --mp-bdr:  #7AAAD0;
+  --mp-txt:  #0E2D4A;
+  --white:   #FFFFFF;
+  --muted:   rgba(11,27,46,0.55);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  background: var(--off);
+  color: var(--navy);
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: var(--navy);
+  padding: 28px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--gold);
+}
+
+.header-left { display: flex; align-items: center; gap: 20px; }
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.brand .r { font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--off); }
+.brand .l { font-family: 'Fraunces', serif; font-weight: 300; font-style: italic; font-size: 18px; color: var(--gold); }
+
+.divider-v { width: 1px; height: 32px; background: rgba(247,244,238,0.2); }
+
+.header-info h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--off);
+  line-height: 1.2;
+}
+.header-info p {
+  font-size: 12px;
+  color: rgba(247,244,238,0.6);
+  margin-top: 3px;
+}
+
+.version-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  background: rgba(202,165,87,0.15);
+  color: var(--gold);
+  border: 1px solid rgba(202,165,87,0.4);
+  padding: 5px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* ─── NAV ─── */
+.nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  display: flex;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.nav a {
+  color: var(--navy);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 14px 20px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.nav a:hover { border-bottom-color: var(--gold); color: var(--navy); }
+
+/* ─── PAGE BODY ─── */
+.page { max-width: 1120px; margin: 0 auto; padding: 48px 32px 96px; }
+
+/* ─── SECTION ─── */
+.section { margin-bottom: 72px; }
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.section-desc {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  max-width: 680px;
+}
+
+/* ─── REGRAS ─── */
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.rule-card {
+  border-radius: 10px;
+  border: 1px solid;
+  overflow: hidden;
+}
+.rule-card-head {
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid;
+}
+.rule-card-body {
+  padding: 18px 20px;
+}
+.rule-card-body ul {
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.85;
+}
+.rule-card-body li { margin-bottom: 2px; }
+
+.rule-mc { background: var(--mc-bg); border-color: var(--mc-bdr); }
+.rule-mc .rule-card-head { background: rgba(168,200,135,0.25); border-color: var(--mc-bdr); color: var(--mc-txt); }
+
+.rule-mp { background: var(--mp-bg); border-color: var(--mp-bdr); }
+.rule-mp .rule-card-head { background: rgba(122,170,208,0.25); border-color: var(--mp-bdr); color: var(--mp-txt); }
+
+.rule-note {
+  font-size: 13px;
+  background: #FFF8E7;
+  border: 1px solid #F0D080;
+  border-left: 3px solid var(--gold);
+  border-radius: 6px;
+  padding: 12px 16px;
+  color: #4A3800;
+}
+
+/* ─── FLOW WRAPPER ─── */
+.flow-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 32px;
+  overflow-x: auto;
+}
+.flow-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.flow-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.pill-mc { background: var(--mc-bg); color: var(--mc-txt); }
+.pill-mp { background: var(--mp-bg); color: var(--mp-txt); }
+
+.mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+.flow-gap { margin-top: 48px; }
+
+/* ─── CONNECTOR STRIP ─── */
+.connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 0 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.connector-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+  max-width: 160px;
+}
+.connector-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: var(--navy);
+  color: var(--gold);
+  padding: 5px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+/* ─── SCRIPTS ─── */
+.scripts-intro {
+  background: var(--navy);
+  color: var(--off);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.scripts-intro strong { color: var(--gold); }
+
+.scripts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.script-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.script-head {
+  padding: 14px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.script-head.mc { background: var(--mc-bg); border-bottom: 1px solid var(--mc-bdr); }
+.script-head.mp { background: var(--mp-bg); border-bottom: 1px solid var(--mp-bdr); }
+
+.script-head-left { display: flex; flex-direction: column; gap: 4px; }
+.script-head h4 {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.script-head.mc h4 { color: var(--mc-txt); }
+.script-head.mp h4 { color: var(--mp-txt); }
+
+.script-who {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.cmd-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  background: var(--navy);
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.script-body { padding: 20px; }
+
+.script-when {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.script-text {
+  background: var(--cream);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--navy);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+.script-text .placeholder {
+  background: #FFF3CD;
+  color: #856404;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid #FFD60A;
+}
+
+.script-note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.script-note strong { color: var(--navy); font-weight: 600; }
+
+.todo-badge {
+  display: inline-block;
+  background: #FFF3CD;
+  color: #856404;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #FFD60A;
+  margin-left: 4px;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  border-top: 1px solid var(--border);
+  margin-top: 72px;
+  padding-top: 24px;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .header { padding: 20px 24px; flex-wrap: wrap; gap: 12px; }
+  .nav { padding: 0 16px; overflow-x: auto; }
+  .page { padding: 32px 16px 72px; }
+  .rules-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ PASSWORD OVERLAY ═══ -->
+<div id="pw-overlay" style="
+  position:fixed; inset:0; z-index:9999;
+  background:#0B1B2E;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Inter',sans-serif;
+">
+  <div style="
+    background:#F7F4EE; border-radius:14px;
+    padding:48px 44px; width:100%; max-width:400px;
+    text-align:center; box-shadow:0 24px 80px rgba(0,0,0,0.4);
+  ">
+    <div style="margin-bottom:24px;">
+      <span style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:700;color:#0B1B2E;">Revenue</span><span style="font-family:'Fraunces',Georgia,serif;font-size:22px;font-weight:300;font-style:italic;color:#CAA557;">Lab</span>
+    </div>
+    <p style="font-size:13px;color:#0B1B2E;opacity:0.6;margin-bottom:6px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;">Documento Interno</p>
+    <h2 style="font-size:18px;font-weight:700;color:#0B1B2E;margin:0 0 8px;">Fluxo Operacional · Atendimento</h2>
+    <p style="font-size:13px;color:#0B1B2E;opacity:0.5;margin:0 0 28px;">Dra. Anna Olivieri · RL01.2026</p>
+    <input id="pw-input" type="password" placeholder="Senha de acesso"
+      style="
+        width:100%; padding:13px 16px; border:2px solid #E2DDD4;
+        border-radius:8px; font-size:15px; color:#0B1B2E;
+        background:#fff; outline:none; box-sizing:border-box;
+        font-family:'Inter',sans-serif; margin-bottom:12px;
+        transition:border-color 0.15s;
+      "
+      onkeydown="if(event.key==='Enter')checkPw()"
+      onfocus="this.style.borderColor='#CAA557'"
+      onblur="this.style.borderColor='#E2DDD4'"
+    >
+    <div id="pw-error" style="font-size:12px;color:#C0392B;margin-bottom:10px;min-height:18px;"></div>
+    <button onclick="checkPw()" style="
+      width:100%; padding:13px; background:#0B1B2E; color:#F7F4EE;
+      border:none; border-radius:8px; font-size:14px; font-weight:600;
+      cursor:pointer; font-family:'Inter',sans-serif;
+      transition:background 0.15s;
+    "
+    onmouseover="this.style.background='#162840'"
+    onmouseout="this.style.background='#0B1B2E'"
+    >Entrar</button>
+    <p style="font-size:11px;color:#0B1B2E;opacity:0.3;margin-top:20px;">Revenue Lab · Acesso restrito</p>
+  </div>
+</div>
+
+<!-- Conteúdo bloqueado até autenticação -->
+<div id="pw-content" style="display:none;">
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div class="header-left">
+    <div class="brand"><span class="r">Revenue</span><span class="l">Lab</span></div>
+    <div class="divider-v"></div>
+    <div class="header-info">
+      <h1>Fluxo Operacional · Atendimento</h1>
+      <p>Dra. Anna Olivieri · CP BrasilMed + Londrina · Rascunho v1 · 20/05/2026</p>
+    </div>
+  </div>
+  <div class="version-badge">RASCUNHO · Para aprovação</div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav">
+  <a href="#regras">Regras de Ouro</a>
+  <a href="#fluxo-mc">Fluxo · Maria Clara</a>
+  <a href="#fluxo-marcos">Fluxo · Marcos Paulo</a>
+  <a href="#scripts">Scripts WhatsApp</a>
+</nav>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+
+  <!-- ═══ REGRAS ═══ -->
+  <section class="section" id="regras">
+    <div class="eyebrow">Princípio geral</div>
+    <div class="section-title">Regras de Ouro</div>
+    <div class="section-desc">
+      O padrão é: <strong>Marcos resolve digitalmente.</strong> Maria Clara é o filtro local — age apenas quando transferir seria constrangedor ou impossível.
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule-card rule-mc">
+        <div class="rule-card-head">
+          ✅ Maria Clara age diretamente
+        </div>
+        <div class="rule-card-body">
+          <ul>
+            <li>Paciente saindo da consulta e pedindo retorno na hora</li>
+            <li>Paciente idoso ou sem acesso a WhatsApp</li>
+            <li>Situação de emergência / mal-estar na recepção</li>
+            <li>Entrega de resultado ou documento presencialmente</li>
+            <li>Qualquer situação em que <em>dizer "vou te passar pra outra pessoa"</em> geraria estranheza</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rule-card rule-mp">
+        <div class="rule-card-head">
+          🔵 Maria Clara repassa para Marcos
+        </div>
+        <div class="rule-card-body">
+          <ul>
+            <li>Agendamento de <strong>1ª consulta</strong> (novo paciente)</li>
+            <li>Perguntas sobre convênio, valor de consulta</li>
+            <li>Solicitação de informações gerais sobre a Dra. Anna</li>
+            <li>Qualquer contato por telefone fixo ou WhatsApp da clínica que <strong>não exija presença física</strong></li>
+            <li>Pacientes que já estão em contato regular com o consultório</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-note">
+      ⚠️ <strong>Importante — WhatsApp BrasilMed é canal compartilhado:</strong> o número (43) 3523-5833 serve todos os médicos da clínica. Maria Clara gerencia esse canal e repassa as demandas da Dra. Anna para o Marcos via WhatsApp pessoal dele. <strong>Não é possível colocar o Marcos para responder diretamente por esse número.</strong><br><br>
+      📱 <strong>(43) 98863-6185 = canal da Dra. Anna</strong> — número exclusivo, controlado pelo Marcos.
+    </div>
+  </section>
+
+  <!-- ═══ FLUXO MARIA CLARA ═══ -->
+  <section class="section" id="fluxo-mc">
+    <div class="eyebrow">Passo a passo</div>
+    <div class="section-title">Fluxo · Maria Clara (Recepção CP)</div>
+    <div class="section-desc">
+      Como Maria Clara decide o que fazer com cada contato que chega à BrasilMed — presencial, telefone ou WhatsApp da clínica.
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-title">
+        <span class="flow-pill pill-mc">👩 Maria Clara</span>
+        CP · BrasilMed · Canais de entrada
+      </div>
+
+      <div class="mermaid">
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#FAF8F3',
+  'primaryTextColor': '#0B1B2E',
+  'primaryBorderColor': '#0B1B2E',
+  'lineColor': '#0B1B2E',
+  'secondaryColor': '#EEF4E8',
+  'tertiaryColor': '#E6EEF8',
+  'background': '#FFFFFF',
+  'mainBkg': '#FAF8F3',
+  'nodeBorder': '#0B1B2E',
+  'clusterBkg': '#F5F2EC',
+  'titleColor': '#0B1B2E',
+  'edgeLabelBackground': '#FFFFFF',
+  'fontSize': '14px'
+}}}%%
+flowchart TD
+    A(["👤 PACIENTE faz contato em CP"]):::start
+
+    A --> B1["📍 Presencial\nPaciente na recepção"]:::channel
+    A --> B2["📞 Telefone fixo\n(43) 3523-5833"]:::channel
+    A --> B3["💬 WhatsApp Clínica\n(43) 3523-5833\n⚠️ canal compartilhado"]:::channel
+
+    B1 --> MC["👩 MARIA CLARA\nIdentifica a demanda\ne decide"]:::mcnode
+    B2 --> MC
+    B3 --> MC
+
+    MC --> D{"Precisa de\nresolução\nimediata\nno local?"}:::decision
+
+    D -->|"SIM"| E["✅ Maria Clara\nage diretamente"]:::mcact
+    D -->|"NÃO"| F["📲 Maria Clara\nrepassa para Marcos"]:::mpact
+
+    E --> E1["Retorno pós-consulta\nAgenda no sistema\n↓\nScript /agendei"]:::script_mc
+    E --> E2["Paciente idoso\nsem WhatsApp\nResolve na hora\n↓\nScript /resolvi"]:::script_mc
+    E --> E3["🚨 Emergência\nna recepção\nAciona o que for necessário\n↓\nScript /urgente"]:::script_mc
+
+    F --> F1["Coleta: nome + tel + motivo\nInforma que Marcos\nentrará em contato\n↓\nScript /passei"]:::script_mp
+
+    E1 --> OUT(["🔵 Marcos Paulo\nciente e registrado"]):::endpoint
+    E2 --> OUT
+    E3 --> OUT
+    F1 --> OUT
+
+    classDef start fill:#0B1B2E,color:#F7F4EE,stroke:#0B1B2E,rx:30,ry:30
+    classDef channel fill:#FAF8F3,color:#0B1B2E,stroke:#C0B898,stroke-width:1.5px
+    classDef mcnode fill:#EEF4E8,color:#2A4A1A,stroke:#A8C887,stroke-width:2px
+    classDef decision fill:#CAA557,color:#0B1B2E,stroke:#0B1B2E,stroke-width:2px
+    classDef mcact fill:#D4EAC8,color:#1A3A10,stroke:#80B060,stroke-width:2px
+    classDef mpact fill:#D0E4F4,color:#0A2A45,stroke:#70A0C8,stroke-width:2px
+    classDef script_mc fill:#F0F7EA,color:#1A3A10,stroke:#A8C887,stroke-dasharray:5 3
+    classDef script_mp fill:#E8F2FC,color:#0A2A45,stroke:#70A0C8,stroke-dasharray:5 3
+    classDef endpoint fill:#2A6E30,color:#FFFFFF,stroke:#2A6E30,rx:30,ry:30
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FLUXO MARCOS ═══ -->
+  <section class="section" id="fluxo-marcos">
+    <div class="eyebrow">Passo a passo</div>
+    <div class="section-title">Fluxo · Marcos Paulo (Atendimento Digital)</div>
+    <div class="section-desc">
+      O que Marcos faz depois de receber uma demanda — seja via passagem da Maria Clara ou direto pelo canal de Londrina.
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-title">
+        <span class="flow-pill pill-mp">🔵 Marcos Paulo</span>
+        CP + Londrina · Atendimento digital
+      </div>
+
+      <div class="mermaid">
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#FAF8F3',
+  'primaryTextColor': '#0B1B2E',
+  'primaryBorderColor': '#0B1B2E',
+  'lineColor': '#0B1B2E',
+  'secondaryColor': '#E6EEF8',
+  'tertiaryColor': '#EEF4E8',
+  'background': '#FFFFFF',
+  'mainBkg': '#E6EEF8',
+  'nodeBorder': '#0B1B2E',
+  'clusterBkg': '#EAF0FA',
+  'titleColor': '#0B1B2E',
+  'edgeLabelBackground': '#FFFFFF',
+  'fontSize': '14px'
+}}}%%
+flowchart TD
+    IN1(["📲 Passagem da\nMaria Clara"]):::start
+    IN2(["💬 Contato direto\nno WhatsApp\nLondrina"]):::start
+
+    IN1 --> MP["🔵 MARCOS PAULO\nLê o contexto\ne responde"]:::mpnode
+    IN2 --> MP
+
+    MP --> T{"Tipo de\ndemanda?"}:::decision
+
+    T -->|"Novo paciente"| S1["Script\n/novo-paciente"]:::script_mp
+    T -->|"Agendamento"| S2["Script\n/agendar"]:::script_mp
+    T -->|"Informação\ngeral"| S3["Script\n/info"]:::script_mp
+    T -->|"Convênio\n/ valor"| S4["Script\n/convenio"]:::script_mp
+    T -->|"Urgente"| S5["🚨 Contato imediato\nou aciona a Dra. Anna\ndireto"]:::urgent
+
+    S1 --> CRM["📋 Registra no CRM\nnome + canal + motivo"]:::crm
+    S2 --> CRM
+    S3 --> CRM
+    S4 --> CRM
+    S5 --> CRM
+
+    CRM --> FIM(["✅ Resolvido\nou agendado"]):::endpoint
+
+    classDef start fill:#0B1B2E,color:#F7F4EE,stroke:#0B1B2E,rx:30,ry:30
+    classDef mpnode fill:#E6EEF8,color:#0E2D4A,stroke:#7AAAD0,stroke-width:2px
+    classDef decision fill:#CAA557,color:#0B1B2E,stroke:#0B1B2E,stroke-width:2px
+    classDef script_mp fill:#D0E4F4,color:#0A2A45,stroke:#70A0C8,stroke-dasharray:5 3
+    classDef urgent fill:#FDEAEA,color:#6B1515,stroke:#D07070,stroke-width:2px
+    classDef crm fill:#FAF8F3,color:#0B1B2E,stroke:#C0B898,stroke-width:1.5px
+    classDef endpoint fill:#2A6E30,color:#FFFFFF,stroke:#2A6E30,rx:30,ry:30
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SCRIPTS ═══ -->
+  <section class="section" id="scripts">
+    <div class="eyebrow">Mensagens padrão</div>
+    <div class="section-title">Scripts WhatsApp</div>
+    <div class="section-desc">
+      Todos os scripts abaixo serão configurados como atalhos no WhatsApp (barra + comando). Textos marcados com <span style="font-family:'JetBrains Mono',monospace;font-size:12px;background:#FFF3CD;color:#856404;padding:1px 5px;border-radius:3px;border:1px solid #FFD60A;">DEFINIR</span> precisam ser validados antes de ativar.
+    </div>
+
+    <div class="scripts-intro">
+      <strong>Como configurar atalhos no WhatsApp Business:</strong><br>
+      Configurações → Ferramentas comerciais → Respostas rápidas → Adicionar atalho<br>
+      <span style="opacity:0.65;font-size:13px;">Cada script abaixo terá seu atalho (ex: /passei) e o texto já pronto. A pessoa edita apenas o que estiver entre colchetes antes de enviar.</span>
+    </div>
+
+    <div class="scripts-grid">
+
+      <!-- SCRIPT MC 1: /passei -->
+      <div class="script-card" id="s-passei">
+        <div class="script-head mc">
+          <div class="script-head-left">
+            <h4>Passagem para Marcos</h4>
+            <div class="script-who">Maria Clara → Marcos Paulo (interno)</div>
+          </div>
+          <div class="cmd-badge">/passei</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Toda vez que Maria Clara recebe um contato (presencial, tel ou WA da clínica) que não exige resolução imediata no local. Enviado para o Marcos no WhatsApp pessoal dele.</p>
+          <div class="script-text">
+            Marcos, recebemos um contato aqui.<br><br>
+            👤 Nome: <span class="placeholder">[NOME]</span><br>
+            📞 Contato: <span class="placeholder">[TELEFONE/WA]</span><br>
+            📋 Motivo: <span class="placeholder">[RESUMO DO QUE QUER]</span><br>
+            📍 Canal: <span class="placeholder">[presencial / tel fixo / WA clínica]</span><br><br>
+            Informei que você entraria em contato em breve.
+          </div>
+          <div class="script-note"><strong>Dica:</strong> Se o paciente estiver aguardando resposta imediata, incluir: "Ficou aguardando resposta ainda hoje."</div>
+        </div>
+      </div>
+
+      <!-- SCRIPT MC 2: /agendei -->
+      <div class="script-card" id="s-agendei">
+        <div class="script-head mc">
+          <div class="script-head-left">
+            <h4>Agendamento Direto — Aviso ao Marcos</h4>
+            <div class="script-who">Maria Clara → Marcos Paulo (interno)</div>
+          </div>
+          <div class="cmd-badge">/agendei</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Quando Maria Clara agenda diretamente no sistema (ex: paciente saindo da consulta pedindo retorno). Avisa o Marcos para ele registrar e acompanhar.</p>
+          <div class="script-text">
+            Marcos, agendei direto aqui na recepção.<br><br>
+            👤 Paciente: <span class="placeholder">[NOME]</span><br>
+            📅 Data/hora: <span class="placeholder">[DIA E HORÁRIO]</span><br>
+            📋 Tipo: <span class="placeholder">[retorno / consulta / exame]</span><br><br>
+            Já está no sistema. Só registrando pra você ter ciência.
+          </div>
+          <div class="script-note"><strong>Importante:</strong> Sempre avisar o Marcos mesmo quando o agendamento já está feito. Ele precisa manter o controle centralizado.</div>
+        </div>
+      </div>
+
+      <!-- SCRIPT MC 3: /resolvi -->
+      <div class="script-card" id="s-resolvi">
+        <div class="script-head mc">
+          <div class="script-head-left">
+            <h4>Resolução Direta — Aviso ao Marcos</h4>
+            <div class="script-who">Maria Clara → Marcos Paulo (interno)</div>
+          </div>
+          <div class="cmd-badge">/resolvi</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Para situações não-agendamento onde MC precisou agir diretamente: entrega de documento, dúvida de idoso resolvida na hora, etc.</p>
+          <div class="script-text">
+            Marcos, resolvi uma situação aqui na recepção.<br><br>
+            👤 Paciente: <span class="placeholder">[NOME]</span><br>
+            📋 O que aconteceu: <span class="placeholder">[DESCRIÇÃO BREVE]</span><br>
+            ✅ Como resolvi: <span class="placeholder">[O QUE FEZ]</span><br><br>
+            Só pra você ter no radar.
+          </div>
+          <div class="script-note">Use para manter o Marcos informado de tudo que aconteceu no presencial — mesmo o que parece pequeno.</div>
+        </div>
+      </div>
+
+      <!-- SCRIPT MC 4: /urgente -->
+      <div class="script-card" id="s-urgente">
+        <div class="script-head mc">
+          <div class="script-head-left">
+            <h4>Situação Urgente</h4>
+            <div class="script-who">Maria Clara → Marcos Paulo (interno)</div>
+          </div>
+          <div class="cmd-badge">/urgente</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Emergência na recepção, paciente em estado grave, situação que precisa de ação imediata da Dra. Anna ou do Marcos.</p>
+          <div class="script-text">
+            🚨 URGENTE — precisamos falar agora.<br><br>
+            👤 Paciente: <span class="placeholder">[NOME]</span><br>
+            📋 Situação: <span class="placeholder">[O QUE ESTÁ ACONTECENDO]</span><br><br>
+            Me liga assim que puder.
+          </div>
+          <div class="script-note"><strong>Se não atender em 2 min:</strong> ligar direto para a Dra. Anna.</div>
+        </div>
+      </div>
+
+      <!-- DIVIDER -->
+      <div style="grid-column: 1 / -1; margin: 8px 0;">
+        <div class="connector">
+          <div class="connector-line"></div>
+          <div class="connector-badge">Scripts do Marcos · Para pacientes</div>
+          <div class="connector-line"></div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);margin-top:8px;">Os scripts abaixo são usados pelo Marcos Paulo diretamente com os pacientes. Textos em <span style="font-family:'JetBrains Mono',monospace;font-size:11px;background:#FFF3CD;color:#856404;padding:1px 5px;border-radius:3px;border:1px solid #FFD60A;">DEFINIR</span> precisam ser validados com André antes de usar.</p>
+      </div>
+
+      <!-- SCRIPT MP 1: /novo-paciente -->
+      <div class="script-card" id="s-novo-paciente">
+        <div class="script-head mp">
+          <div class="script-head-left">
+            <h4>Recepção de Novo Paciente</h4>
+            <div class="script-who">Marcos Paulo → Paciente</div>
+          </div>
+          <div class="cmd-badge">/novo-paciente</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Primeiro contato de paciente que nunca consultou com a Dra. Anna. Objetivo: acolher, coletar informações básicas e encaminhar para agendamento.</p>
+          <div class="script-text">
+            Olá, <span class="placeholder">[NOME]</span>! 😊<br><br>
+            Aqui é o Marcos, do consultório da Dra. Anna Olivieri, cardiologista.<br><br>
+            Que bom ter você por aqui! Me conta um pouquinho — como posso te ajudar? É sua primeira consulta com a Dra. Anna?
+          </div>
+          <div class="script-note">
+            <strong>Próximo passo:</strong> após resposta, perguntar convênio (ou particular) e oferecer as datas disponíveis.<br>
+            <strong>Script de agendamento:</strong> <a href="#s-agendar" style="color:var(--mp-txt)">/agendar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCRIPT MP 2: /agendar -->
+      <div class="script-card" id="s-agendar">
+        <div class="script-head mp">
+          <div class="script-head-left">
+            <h4>Confirmação de Agendamento</h4>
+            <div class="script-who">Marcos Paulo → Paciente</div>
+          </div>
+          <div class="cmd-badge">/agendar</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Após confirmar data e horário com o paciente. Envia o resumo da consulta agendada.</p>
+          <div class="script-text">
+            Perfeito, <span class="placeholder">[NOME]</span>! 👍<br><br>
+            Sua consulta está confirmada:<br>
+            📅 <span class="placeholder">[DIA DA SEMANA]</span>, <span class="placeholder">[DATA]</span> às <span class="placeholder">[HORÁRIO]</span><br>
+            📍 <span class="placeholder">[CLÍNICA — CP BrasilMed ou Londrina]</span><br>
+            👩‍⚕️ Dra. Anna Olivieri · Cardiologista<br><br>
+            Qualquer dúvida, pode me chamar aqui! Até lá. 😊
+          </div>
+          <div class="script-note">
+            <strong>Lembrete automático:</strong> enviar mensagem 1 dia antes da consulta.<span class="todo-badge">a definir</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCRIPT MP 3: /info -->
+      <div class="script-card" id="s-info">
+        <div class="script-head mp">
+          <div class="script-head-left">
+            <h4>Informações Gerais</h4>
+            <div class="script-who">Marcos Paulo → Paciente</div>
+          </div>
+          <div class="cmd-badge">/info</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Quando o paciente faz perguntas gerais sobre a Dra. Anna, especialidades, locais de atendimento, como funciona a consulta, etc.</p>
+          <div class="script-text">
+            Claro! A Dra. Anna é cardiologista especializada em arritmias e marcapasso.<br><br>
+            Ela atende em dois consultórios:<br>
+            📍 Cornélio Procópio · BrasilMed · Av. Alberto Carazzai, 1400<br>
+            📍 Londrina · Av. Madre Leônia Milito, 1377 · 12º andar<br><br>
+            Quer agendar uma consulta ou tem alguma dúvida específica?
+          </div>
+          <div class="script-note">Personalizar conforme a dúvida — esse é o script base de apresentação.</div>
+        </div>
+      </div>
+
+      <!-- SCRIPT MP 4: /convenio -->
+      <div class="script-card" id="s-convenio">
+        <div class="script-head mp">
+          <div class="script-head-left">
+            <h4>Consulta sobre Convênio</h4>
+            <div class="script-who">Marcos Paulo → Paciente</div>
+          </div>
+          <div class="cmd-badge">/convenio</div>
+        </div>
+        <div class="script-body">
+          <div class="script-when">Quando usar</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Quando o paciente pergunta se a Dra. Anna atende pelo plano de saúde dele.</p>
+          <div class="script-text">
+            Oi, <span class="placeholder">[NOME]</span>!<br><br>
+            Qual plano de saúde você tem? 😊<br><br>
+            A Dra. Anna atende alguns convênios — verifico aqui pra você em instantes.
+          </div>
+          <div class="script-note">
+            <strong>Convênios aceitos:</strong> Quartzo / Diamante / Esmeralda / Rubi <span class="todo-badge">confirmar lista completa</span><br>
+            <strong>Particular:</strong> R$ 280 (sem retorno) · R$ 400 (com retorno)
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <div class="footer">
+    <div>Revenue Lab · RL01.2026 · Dra. Anna Olivieri</div>
+    <div>Fluxo Operacional v1 · 20/05/2026 · Rascunho para aprovação</div>
+  </div>
+
+</div>
+
+</div><!-- /pw-content -->
+
+<script>
+// ── Password protection ──────────────────────────────────────
+(function(){
+  var PASS = 'RL01.2026';
+  var KEY  = 'rl_auth_fluxo_v1';
+  if(sessionStorage.getItem(KEY) === '1'){
+    document.getElementById('pw-overlay').style.display = 'none';
+    document.getElementById('pw-content').style.display = 'block';
+  }
+})();
+
+function checkPw(){
+  var input = document.getElementById('pw-input').value;
+  var error = document.getElementById('pw-error');
+  if(input === 'RL01.2026'){
+    sessionStorage.setItem('rl_auth_fluxo_v1','1');
+    document.getElementById('pw-overlay').style.display = 'none';
+    document.getElementById('pw-content').style.display = 'block';
+  } else {
+    error.textContent = 'Senha incorreta. Tente novamente.';
+    document.getElementById('pw-input').style.borderColor = '#C0392B';
+    document.getElementById('pw-input').value = '';
+    setTimeout(function(){
+      document.getElementById('pw-input').style.borderColor = '#E2DDD4';
+      error.textContent = '';
+    }, 2500);
+  }
+}
+</script>
+
+<script>
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  flowchart: {
+    curve: 'basis',
+    padding: 20,
+    nodeSpacing: 50,
+    rankSpacing: 60,
+    htmlLabels: true,
+  },
+  themeVariables: {
+    fontFamily: "'Inter', sans-serif",
+    fontSize: '14px',
+    primaryColor: '#FAF8F3',
+    primaryTextColor: '#0B1B2E',
+    primaryBorderColor: '#0B1B2E',
+    lineColor: '#0B1B2E',
+    secondaryColor: '#EEF4E8',
+    tertiaryColor: '#E6EEF8',
+    background: '#FFFFFF',
+    mainBkg: '#FAF8F3',
+    nodeBorder: '#0B1B2E',
+    clusterBkg: '#F5F2EC',
+    titleColor: '#0B1B2E',
+    edgeLabelBackground: '#FFFFFF',
+  }
+});
+</script>
+
+</body>
+</html>
