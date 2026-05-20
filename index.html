@@ -560,15 +560,15 @@ flowchart TD
     E3 --> OUT
     F1 --> OUT
 
-    classDef start fill:#0B1B2E,color:#F7F4EE,stroke:#0B1B2E,rx:30,ry:30
+    classDef start fill:#0B1B2E,color:#F7F4EE,stroke:#0B1B2E
     classDef channel fill:#FAF8F3,color:#0B1B2E,stroke:#C0B898,stroke-width:1.5px
     classDef mcnode fill:#EEF4E8,color:#2A4A1A,stroke:#A8C887,stroke-width:2px
     classDef decision fill:#CAA557,color:#0B1B2E,stroke:#0B1B2E,stroke-width:2px
     classDef mcact fill:#D4EAC8,color:#1A3A10,stroke:#80B060,stroke-width:2px
     classDef mpact fill:#D0E4F4,color:#0A2A45,stroke:#70A0C8,stroke-width:2px
-    classDef script_mc fill:#F0F7EA,color:#1A3A10,stroke:#A8C887,stroke-dasharray:5 3
-    classDef script_mp fill:#E8F2FC,color:#0A2A45,stroke:#70A0C8,stroke-dasharray:5 3
-    classDef endpoint fill:#2A6E30,color:#FFFFFF,stroke:#2A6E30,rx:30,ry:30
+    classDef script_mc fill:#F0F7EA,color:#1A3A10,stroke:#A8C887
+    classDef script_mp fill:#E8F2FC,color:#0A2A45,stroke:#70A0C8
+    classDef endpoint fill:#2A6E30,color:#FFFFFF,stroke:#2A6E30
       </div>
     </div>
   </section>
@@ -626,13 +626,13 @@ flowchart TD
 
     CRM --> FIM(["✅ Resolvido\nou agendado"]):::endpoint
 
-    classDef start fill:#0B1B2E,color:#F7F4EE,stroke:#0B1B2E,rx:30,ry:30
+    classDef start fill:#0B1B2E,color:#F7F4EE,stroke:#0B1B2E
     classDef mpnode fill:#E6EEF8,color:#0E2D4A,stroke:#7AAAD0,stroke-width:2px
     classDef decision fill:#CAA557,color:#0B1B2E,stroke:#0B1B2E,stroke-width:2px
-    classDef script_mp fill:#D0E4F4,color:#0A2A45,stroke:#70A0C8,stroke-dasharray:5 3
+    classDef script_mp fill:#D0E4F4,color:#0A2A45,stroke:#70A0C8
     classDef urgent fill:#FDEAEA,color:#6B1515,stroke:#D07070,stroke-width:2px
     classDef crm fill:#FAF8F3,color:#0B1B2E,stroke:#C0B898,stroke-width:1.5px
-    classDef endpoint fill:#2A6E30,color:#FFFFFF,stroke:#2A6E30,rx:30,ry:30
+    classDef endpoint fill:#2A6E30,color:#FFFFFF,stroke:#2A6E30
       </div>
     </div>
   </section>
@@ -868,13 +868,20 @@ flowchart TD
 <script>
 // ── Password protection ──────────────────────────────────────
 (function(){
-  var PASS = 'RL01.2026';
-  var KEY  = 'rl_auth_fluxo_v1';
+  var KEY = 'rl_auth_fluxo_v1';
   if(sessionStorage.getItem(KEY) === '1'){
     document.getElementById('pw-overlay').style.display = 'none';
     document.getElementById('pw-content').style.display = 'block';
   }
 })();
+
+// Roda Mermaid quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function(){
+  var KEY = 'rl_auth_fluxo_v1';
+  if(sessionStorage.getItem(KEY) === '1' && typeof mermaid !== 'undefined'){
+    mermaid.run({ querySelector: '.mermaid' });
+  }
+});
 
 function checkPw(){
   var input = document.getElementById('pw-input').value;
@@ -883,6 +890,10 @@ function checkPw(){
     sessionStorage.setItem('rl_auth_fluxo_v1','1');
     document.getElementById('pw-overlay').style.display = 'none';
     document.getElementById('pw-content').style.display = 'block';
+    // Re-renderiza Mermaid após revelar o conteúdo
+    if(typeof mermaid !== 'undefined'){
+      mermaid.run({ querySelector: '.mermaid' });
+    }
   } else {
     error.textContent = 'Senha incorreta. Tente novamente.';
     document.getElementById('pw-input').style.borderColor = '#C0392B';
@@ -897,7 +908,7 @@ function checkPw(){
 
 <script>
 mermaid.initialize({
-  startOnLoad: true,
+  startOnLoad: false,
   theme: 'base',
   flowchart: {
     curve: 'basis',
